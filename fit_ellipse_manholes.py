@@ -1,28 +1,11 @@
 #!/usr/bin/env python3
 """
-MINIMAL ellipse fitting: Canny edges -> RANSAC (Sampson distance) -> box rules -> Sampson least squares.
-
-Compared with simple_ellipse_batch_rules.py this version has NO sub-pixel edge step, NO gradient-
-direction (normal) test, NO polarity rule and NO "largest connected group" step. What is left:
-
   1. Edge points      cv2.Canny on the blurred crop (whole-pixel positions).
   2. RANSAC           pick 5 edge points, fit an ellipse, count the points within `threshold` px
                       (Sampson distance) of it, keep the candidate with the most.
   3. Box rules        a candidate (and the final ellipse) must be plausible for its detector box.
   4. Final fit        least squares on the Sampson distance, using the inliers of the best candidate.
-  5. Edge shift       OPTIONAL (--edge-shift PX, default 0 = off, so the results are identical to before).
-                      A manhole shows as a thin dark ring. Seen from a low camera the ring is thinner than
-                      the image blur at the top and bottom of the ellipse, so the strongest gradient (what
-                      Canny marks) lies about one blur width OUTSIDE the ring. This step moves every inlier
-                      of step 4 inward by PX along the ellipse's inward normal and refits the ellipse
-                      through the moved points (same least squares). The box rules are checked on the
-                      step-4 ellipse only, before the shift, because a correctly shifted ellipse can be
-                      slightly smaller than the rules allow. rms_px is then measured on the moved points.
-                      Tested on KITTI frames 28-31 by shifting the ellipses afterwards: about 1.0 px gave the
-                      smallest joint-fit residual (0.142 px) and a tilt of 1.17 deg (LiDAR 1.20 deg);
-                      0.5 px -> 1.84 deg, 1.5 px -> 0.10 deg, so the result is very sensitive to PX.
 
-Output columns match the other fitting scripts, so make_test_suite.py and compare_to_truth.py work:
     python minimal_ellipse_batch.py --images IMG_DIR --detections dets.csv --output OUT_DIR
 """
 

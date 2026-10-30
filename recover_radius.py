@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Recover the true radius (in metres) from a camera_calibration_from_ellipse.py
-(or calibrate_known_f.py) output CSV run with --radius 1, using the known
+Recover the true radius (in metres) from a camera_calibration_from_ellipse.py output CSV run with --radius 1, using the known
 distance the camera travelled between two rows/frames.
 
 WHY THIS EXISTS
@@ -24,10 +23,6 @@ USAGE
     python recover_radius.py --csv calibration_results.csv
 
 Then answer the prompts: start row, end row, speed (km/h), fps.
-
-Rows are matched to your CSV's "filename" column, 1-indexed in the ORDER
-THEY APPEAR in the CSV, not by frame number in the filename -- if your CSV
-isn't already sorted the way you expect, check filenames when prompted.
 """
 
 import argparse

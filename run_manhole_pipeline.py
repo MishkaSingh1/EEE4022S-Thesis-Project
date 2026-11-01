@@ -581,8 +581,7 @@ def process_manhole(m, a, scr):
              r1_joint_h=fnum(j1["camera_height"]), r1_joint_rms=fnum(j1["rms_px"]),
              r1_joint_sd_f=fnum(j1.get("sd_focal_length_px")), r1_joint_sd_h=fnum(j1.get("sd_camera_height")),
              r1_joint_sd_tilt=fnum(j1.get("sd_tilt_deg")))
-    # focal-length uncertainty check: f is only measurable when the ellipses rotate enough with their sideways
-    # offset; a manhole almost straight ahead gives a huge 1-sigma uncertainty from the joint fit itself
+    # focal-length uncertainty check
     f1, sdf = m["r1_joint_f"], m["r1_joint_sd_f"]
     if f1 is None or sdf is None or f1 <= 0:
         fail("7 focal-length uncertainty", f"joint fit gave no usable f / sd (f={f1}, sd={sdf})")
@@ -592,8 +591,7 @@ def process_manhole(m, a, scr):
         fail("7 focal-length uncertainty", f"joint f = {f1:.1f} +/- {sdf:.1f} px ({m['r1_joint_sd_f_pct']:.1f}% "
                                           f"> {a.max_f_sd:g}%): f not measurable for this manhole")
         return
-    # height and tilt uncertainty checks (joint fit 1-sigma). Height and its SD both scale with the radius, so
-    # SD/height in % is the same at R = 1 as at the recovered radius; tilt does not depend on the radius.
+    # height and tilt uncertainty checks (joint fit 1-sigma)
     h1, sdh, sdt = m["r1_joint_h"], m["r1_joint_sd_h"], m["r1_joint_sd_tilt"]
     if h1 is None or sdh is None or sdt is None or h1 <= 0:
         fail("7 height/tilt uncertainty", f"joint fit gave no usable height / tilt sd (h={h1}, sd_h={sdh}, sd_tilt={sdt})")

@@ -51,7 +51,7 @@ IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".bmp"}
 SCRIPTS = dict(yolo="batch_test_yolo.py", ellipse="simple_ellipse_batch_rules.py",
                calib="camera_calibration_from_ellipse.py", radius="recover_radius_kitti.py",
                road="kitti_road_plane.py")
-NUM = r"([-+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)"
+
 JOINT_MIN_TILT_DEG = 0.05           # lower tilt limit inside camera_calibration_from_ellipse.py's joint fit
 
 LOG_PATH = None
